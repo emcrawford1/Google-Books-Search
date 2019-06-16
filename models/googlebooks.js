@@ -1,18 +1,15 @@
-const router = require("express").Router();
-const booksController = require("../../controllers/booksControllers");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-router.route("/")
-  .get(booksController.findAdll)
-  .post(booksController.create);
+ const bookSchema = new Schema({
+   title: { type: String, required: true},
+   authors: String,
+   description: String,
+   image: String,
+   link: String
+ })
 
-  router
-  .route("/:id")
-  .get(booksController.findById)
-  .put(booksController.update)
-  .delete(booksController.remove);
+ const Book = mongoose.model("googleBook", bookSchema);
 
-  module.exports = router;
-
-
-
+ module.exports = Book;
 
