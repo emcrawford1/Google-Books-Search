@@ -26,14 +26,16 @@ class Books extends Component {
 
   saveBook(book) {
 
-   
-    dbAPI.saveBook({
+    let savedBook = {
       title: book.volumeInfo.title,
       authors: book.volumeInfo.authors,
       description: book.volumeInfo.description,
       image: book.volumeInfo.imageLinks.smallThumbnail,
       link: book.volumeInfo.infoLink
-    })
+    }
+    console.log(savedBook);
+   
+    dbAPI.saveBook(savedBook).then(res => console.log(res));
   };
 
   handleSearch = event => {

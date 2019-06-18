@@ -16,45 +16,60 @@ class Books extends Component {
     title: ""
   };
 
-  loadBooks(id) {
-    googleAPI.googleBook(id)
-      .then(res =>
-        this.setState({ books: res.data, title: "" })
-      )
-      .catch(err => console.log(err));
-  };
 
-  saveBook(book) {
-
-   
-    dbAPI.saveBook({
-      title: book.volumeInfo.title,
-      authors: book.volumeInfo.authors,
-      description: book.volumeInfo.description,
-      image: book.volumeInfo.imageLinks.smallThumbnail,
-      link: book.volumeInfo.infoLink
-    })
-  };
-
-  handleSearch = event => {
-    event.preventDefault();
-    googleAPI.googleBook(this.state.title)
-      .then(res => {
-        console.log(res);
-        this.setState({ books: res.data, title: "" })
-        console.log(this.state.books.items.length)
-      }
-      )
-      .catch(err => console.log(err));
+  componentDidMount() {
+    this.loadBooks();
   }
 
+  loadBooks() {
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
+    dbAPI.getBooks()
+      .then(res => { console.log(res)
+        this.setState({ books: res.data, title: ""})}
+        )
+        .catch(err => console.log(err));
   };
+
+  deleteBook(book) {
+    let id = book._id;
+    dbAPI.deleteBook(id)
+      .then(res => {
+        console.log(res);
+        this.loadBooks();
+      })
+      .catch(err => console.log(err));
+  }
+  // saveBook(book) {
+
+   
+  //   dbAPI.saveBook({
+  //     title: book.volumeInfo.title,
+  //     authors: book.volumeInfo.authors,
+  //     description: book.volumeInfo.description,
+  //     image: book.volumeInfo.imageLinks.smallThumbnail,
+  //     link: book.volumeInfo.infoLink
+  //   })
+  // };
+
+  // handleSearch = event => {
+  //   event.preventDefault();
+  //   googleAPI.googleBook(this.state.title)
+  //     .then(res => {
+  //       console.log(res);
+  //       this.setState({ books: res.data, title: "" })
+  //       console.log(this.state.books.items.length)
+  //     }
+  //     )
+  //     .catch(err => console.log(err));
+  // }
+
+
+  // handleInputChange = event => {
+  //   const { name, value } = event.target;
+  //   this.setState({
+  //     [name]: value
+  //   });
+  // };
 
   render() {
     return (
@@ -64,38 +79,25 @@ class Books extends Component {
           <h1>(React) Google Books Search</h1>
           <h3> Search for and Save Books of Interest</h3>
         </Jumbotron>
-        <div className="input-group mb-3">
-          <Input
-            value={this.state.title}
-            onChange={this.handleInputChange}
-            name="title"
-            placeholder="Search by Book Title...."
-          />
-          <FormBtn
-            onClick={this.handleSearch}
-          >
-            Search
-
-          </FormBtn>
-        </div>
         <div>
-          {this.state.books.items !== undefined || this.state.books.length ? (
+          {this.state.books !== undefined || this.state.books.length ? (
             <div>
-              {this.state.books.items.map((book, index) => (
-                <div className="card mb-3">
+              {this.state.books.map((book, index) => (
+                <div className="card mb-3" key={index}>
               
                 <Card
-                  key={index}
-                  title={book.volumeInfo.title}
-                  authors={book.volumeInfo.authors}
-                  description={book.volumeInfo.description}
-                  image={book.volumeInfo.imageLinks.smallThumbnail || "https://via.placeholder.com/150"}
-                  link={book.volumeInfo.infoLink}
+                  key={book._id}
+                  id={book._id}
+                  title={book.title}
+                  authors={book.authors}
+                  description={book.description}
+                  image={book.image || "https://via.placeholder.com/150"}
+                  link={book.link}
                 />
                 <Btn 
-              onClick={() => this.saveBook(book)}
+              onClick={() => this.deleteBook(book)}
               >
-                Save</Btn>
+                Delete</Btn>
                 </div>
               ))
               }
