@@ -1,14 +1,20 @@
 import React from "react";
 
 
+// export function Input(props) {
+//   return (
+//     <div className="form-group">
+//       <input className="form-control" {...props} />
+//     </div>
+//   );
+// }
+
+
 export function Input(props) {
   return (
-    <div className="form-group">
-      <input className="form-control" {...props} />
-    </div>
-  );
+    <input type="text" className="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2" {...props} />
+  )
 }
-
 
 export function TextArea(props) {
   return (
@@ -18,7 +24,16 @@ export function TextArea(props) {
   );
 }
 
+
 export function FormBtn(props) {
+  return (
+    <div className="input-group-append">
+    <button {...props} className="btn btn-outline-secondary" type="button" id="button-addon2">{props.children}</button>
+  </div>
+  )
+}
+
+export function Btn(props) {
   return (
     <button {...props} style={{ float: "right", marginBottom: 10}} className="btn btn-success">
       {props.children}

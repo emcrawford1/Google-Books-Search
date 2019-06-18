@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 import Jumbotron from "../components/Jumbotron";
 import Card from "../components/Card";
-import { Input, TextArea, FormBtn } from "../components/Form";
+import { Input, FormBtn, Btn } from "../components/Form";
 
 import dbAPI from "../utils/dbAPI";
 import googleAPI from "../utils/googleAPI";
@@ -26,12 +26,13 @@ class Books extends Component {
 
   saveBook(book) {
 
+   
     dbAPI.saveBook({
-      title: book.title,
-      authors: book.authors,
-      description: book.description,
-      image: book.image,
-      link: book.link
+      title: book.volumeInfo.title,
+      authors: book.volumeInfo.authors,
+      description: book.volumeInfo.description,
+      image: book.volumeInfo.imageLinks.smallThumbnail,
+      link: book.volumeInfo.infoLink
     })
   };
 
@@ -41,7 +42,7 @@ class Books extends Component {
       .then(res => {
         console.log(res);
         this.setState({ books: res.data, title: "" })
-        console.log(this.state.books.length)
+        console.log(this.state.books.items.length)
       }
       )
       .catch(err => console.log(err));
@@ -63,7 +64,7 @@ class Books extends Component {
           <h1>(React) Google Books Search</h1>
           <h3> Search for and Save Books of Interest</h3>
         </Jumbotron>
-        <form>Book Search
+        <div className="input-group mb-3">
           <Input
             value={this.state.title}
             onChange={this.handleInputChange}
@@ -76,21 +77,29 @@ class Books extends Component {
             Search
 
           </FormBtn>
-        </form>
+        </div>
         <div>
-          {this.state.books.length ? (
+          {this.state.books.items !== undefined || this.state.books.length ? (
             <div>
               {this.state.books.items.map((book, index) => (
+                <div className="card mb-3">
+              
                 <Card
                   key={index}
                   title={book.volumeInfo.title}
                   authors={book.volumeInfo.authors}
                   description={book.volumeInfo.description}
-                  image={book.volumeInfo.imageLinks.smallThumbnail}
+                  image={book.volumeInfo.imageLinks.smallThumbnail || "https://via.placeholder.com/150"}
                   link={book.volumeInfo.infoLink}
                 />
+                <Btn 
+              onClick={() => this.saveBook(book)}
+              >
+                Save</Btn>
+                </div>
               ))
               }
+              
             </div>
           ) : (
               <h3>No results to display.</h3>
