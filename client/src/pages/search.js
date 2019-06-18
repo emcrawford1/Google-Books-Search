@@ -96,6 +96,7 @@ class Books extends Component {
                 />
                 <Btn 
               onClick={() => this.saveBook(book)}
+              className={ "btn btn-success"}
               >
                 Save</Btn>
                 </div>

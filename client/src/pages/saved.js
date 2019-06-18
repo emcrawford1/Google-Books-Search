@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 
 import Jumbotron from "../components/Jumbotron";
 import Card from "../components/Card";
-import { Input, FormBtn, Btn } from "../components/Form";
+import { Btn } from "../components/Form";
 
 import dbAPI from "../utils/dbAPI";
-import googleAPI from "../utils/googleAPI";
 
 
 
@@ -39,37 +37,7 @@ class Books extends Component {
       })
       .catch(err => console.log(err));
   }
-  // saveBook(book) {
-
-   
-  //   dbAPI.saveBook({
-  //     title: book.volumeInfo.title,
-  //     authors: book.volumeInfo.authors,
-  //     description: book.volumeInfo.description,
-  //     image: book.volumeInfo.imageLinks.smallThumbnail,
-  //     link: book.volumeInfo.infoLink
-  //   })
-  // };
-
-  // handleSearch = event => {
-  //   event.preventDefault();
-  //   googleAPI.googleBook(this.state.title)
-  //     .then(res => {
-  //       console.log(res);
-  //       this.setState({ books: res.data, title: "" })
-  //       console.log(this.state.books.items.length)
-  //     }
-  //     )
-  //     .catch(err => console.log(err));
-  // }
-
-
-  // handleInputChange = event => {
-  //   const { name, value } = event.target;
-  //   this.setState({
-  //     [name]: value
-  //   });
-  // };
+  
 
   render() {
     return (
@@ -96,6 +64,7 @@ class Books extends Component {
                 />
                 <Btn 
               onClick={() => this.deleteBook(book)}
+              className={ "btn btn-danger"}
               >
                 Delete</Btn>
                 </div>

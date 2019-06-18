@@ -35,11 +35,15 @@ export function FormBtn(props) {
 
 export function Btn(props) {
   return (
-    <button {...props} style={{ float: "right", marginBottom: 10}} className="btn btn-success">
+    <button {...props} >
       {props.children}
     </button>
   )
 }
+
+
+// className="btn btn-success">
+// style={{ float: "right", marginBottom: 10}} 
 
 
 
